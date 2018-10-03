@@ -1,12 +1,10 @@
 package com.springboot.restfullwebservices.filtering;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFilter;
 
-@JsonIgnoreProperties({"field2"})
+@JsonFilter("SomeBeanFilter")
 public class SomeBean {
 
-    @JsonIgnore
     String field1;
 
     String field2;
