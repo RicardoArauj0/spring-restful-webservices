@@ -19,7 +19,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public class UserJPAController {
 
     @Autowired
-    private UserDAOService userService;
+    private PostRepository postRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -60,5 +60,35 @@ public class UserJPAController {
     public void delete(@PathVariable int id) {
         userRepository.deleteById(id );
     }
+
+    @GetMapping(path = "/jpa/users/{id}/posts")
+    public List<Post> getAllUPostsFromUser(@PathVariable int id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(!userOptional.isPresent()){
+            throw new UserNotFoundException("id-" + id);
+        }
+        return userOptional.get().getPosts();
+    }
+
+    @PostMapping(path = "/jpa/users/{id}/posts")
+    public ResponseEntity savePost(@PathVariable int id, @Valid @RequestBody Post post) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(!userOptional.isPresent()){
+            throw new UserNotFoundException("id-" + id);
+        }
+
+        post.setUser(userOptional.get());
+
+        postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(post.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
 }
 
