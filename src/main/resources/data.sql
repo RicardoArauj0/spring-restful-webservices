@@ -1,3 +1,3 @@
-insert into user values (1, sysdate(), 'John');
-insert into user values (2, sysdate(), 'Daenerys');
-insert into user values (3, sysdate(), 'Tyrion');
+insert into user values (1001, sysdate(), 'John');
+insert into user values (1002, sysdate(), 'Daenerys');
+insert into user values (1003, sysdate(), 'Tyrion');
